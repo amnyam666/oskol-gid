@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Главная — Старооскольский гид{% endblock %}
+{% block content %}
+<div class="hero">
+    <h1><i class="bi bi-geo-alt-fill"></i> Добро пожаловать в Старый Оскол!</h1>
+    <p>Узнайте самые интересные места, оставьте отзыв и планируйте свой досуг</p>
+</div>
+
+<div class="category-filter mb-4 text-center">
+    <a href="{{ url_for('index', cat='all') }}" class="btn btn-outline-secondary {% if not current_cat or current_cat == 'all' %}active{% endif %}">Все</a>
+    {% for cat in categories %}
+        <a href="{{ url_for('index', cat=cat) }}" class="btn btn-outline-secondary {% if current_cat == cat %}active{% endif %}">
+            {% if cat == 'monument' %}🏛️ Памятники
+            {% elif cat == 'park' %}🌳 Парки
+            {% elif cat == 'museum' %}🏺 Музеи
+            {% elif cat == 'cafe' %}☕ Кафе
+            {% endif %}
+        </a>
+    {% endfor %}
+</div>
+
+<div class="row g-4">
+    {% for place in places %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+            <img src="{{ place.photo_url }}" class="card-img-top" alt="{{ place.name }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ place.name }}</h5>
+                <p class="card-text text-muted small">{{ place.address }}</p>
+                <p class="card-text">{{ place.description[:100] }}{% if place.description|length > 100 %}...{% endif %}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="rating-stars">
+                        {% if place.rating_avg > 0 %}
+                            {% set full = place.rating_avg|round(0, 'floor')|int %}
+                            {% for i in range(full) %}★{% endfor %}
+                            {% if place.rating_avg - full >= 0.5 %}½{% endif %}
+                            ({{ place.rating_avg|round(1) }})
+                        {% else %}
+                            ☆☆☆☆☆ (нет оценок)
+                        {% endif %}
+                    </span>
+                    <a href="{{ url_for('place_detail', place_id=place.id) }}" class="btn btn-primary btn-sm">Подробнее <i class="bi bi-arrow-right-short"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12 text-center"><p>Пока нет мест в этой категории.</p></div>
+    {% endfor %}
+</div>
+{% endblock %}

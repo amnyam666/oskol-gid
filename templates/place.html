@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}{{ place.name }}{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <img src="{{ place.photo_url }}" class="img-fluid place-image" alt="{{ place.name }}">
+    </div>
+    <div class="col-md-6">
+        <h1 class="display-5 fw-bold">{{ place.name }}</h1>
+        <p class="text-muted"><i class="bi bi-tag"></i> {{ place.category }} | <i class="bi bi-eye"></i> {{ place.views }} просмотров</p>
+        <p><i class="bi bi-geo-alt"></i> <strong>Адрес:</strong> {{ place.address }}</p>
+        <div class="mb-3">
+            <strong>Рейтинг:</strong>
+            <span class="rating-stars">
+                {% if place.rating_avg > 0 %}
+                    {% set full = place.rating_avg|round(0, 'floor')|int %}
+                    {% for i in range(full) %}★{% endfor %}
+                    {% if place.rating_avg - full >= 0.5 %}½{% endif %}
+                    ({{ place.rating_avg|round(1) }})
+                {% else %}
+                    ☆☆☆☆☆ (нет оценок)
+                {% endif %}
+            </span>
+        </div>
+        <p class="lead">{{ place.description }}</p>
+    </div>
+</div>
+
+<h3 class="mt-5"><i class="bi bi-chat-dots"></i> Отзывы</h3>
+{% if session.user_id %}
+    <div class="card p-3 mb-4 shadow-sm">
+        <form method="POST" action="{{ url_for('add_review', place_id=place.id) }}">
+            <div class="mb-3">
+                <label>Ваша оценка</label>
+                <select name="rating" class="form-select w-auto">
+                    <option value="1">1 ★</option><option value="2">2 ★★</option>
+                    <option value="3" selected>3 ★★★</option>
+                    <option value="4">4 ★★★★</option><option value="5">5 ★★★★★</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>Комментарий</label>
+                <textarea name="comment" class="form-control" rows="3" placeholder="Поделитесь впечатлениями..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success"><i class="bi bi-send"></i> Отправить</button>
+        </form>
+    </div>
+{% else %}
+    <p><a href="{{ url_for('login') }}">Войдите</a>, чтобы оставить отзыв.</p>
+{% endif %}
+
+{% for review in reviews %}
+<div class="review-card">
+    <div class="d-flex justify-content-between">
+        <strong><i class="bi bi-person"></i> {{ review.username }}</strong>
+        <span class="rating-stars">
+            {% for i in range(review.rating) %}★{% endfor %}
+            {% for i in range(5 - review.rating) %}☆{% endfor %}
+        </span>
+    </div>
+    <small class="text-muted">{{ review.created_at }}</small>
+    <p class="mt-2">{{ review.comment }}</p>
+</div>
+{% else %}
+    <p>Пока нет отзывов. Будьте первым!</p>
+{% endfor %}
+{% endblock %}
