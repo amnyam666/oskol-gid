@@ -5,11 +5,33 @@
 <div class="card shadow-sm">
     <div class="card-body">
         <form method="POST">
-            <div class="mb-3"><label>Название*</label><input type="text" name="name" class="form-control" required></div>
-            <div class="mb-3"><label>Описание</label><textarea name="description" rows="3" class="form-control"></textarea></div>
-            <div class="mb-3"><label>Категория</label><select name="category" class="form-select"><option value="monument">Памятник</option><option value="park">Парк</option><option value="museum">Музей</option><option value="cafe">Кафе</option></select></div>
-            <div class="mb-3"><label>Адрес</label><input type="text" name="address" class="form-control"></div>
-            <div class="mb-3"><label>URL фото</label><input type="url" name="photo_url" class="form-control" placeholder="https://..."></div>
+            <div class="mb-3">
+                <label>Название (рус.)*</label>
+                <input type="text" name="name" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Название (англ.)*</label>
+                <input type="text" name="english_name" class="form-control" required 
+                       placeholder="Например: Monument of Ugarov">
+                <small class="text-muted">Используется для поиска картинки в папке static/uploads/</small>
+            </div>
+            <div class="mb-3">
+                <label>Описание</label>
+                <textarea name="description" rows="3" class="form-control"></textarea>
+            </div>
+            <div class="mb-3">
+                <label>Категория</label>
+                <select name="category" class="form-select">
+                    <option value="monument">Памятник</option>
+                    <option value="park">Парк</option>
+                    <option value="museum">Музей</option>
+                    <option value="cafe">Кафе</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>Адрес</label>
+                <input type="text" name="address" class="form-control">
+            </div>
             <button type="submit" class="btn btn-success">Сохранить</button>
             <a href="{{ url_for('admin_panel') }}" class="btn btn-secondary">Отмена</a>
         </form>

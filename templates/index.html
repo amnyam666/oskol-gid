@@ -23,7 +23,7 @@
     {% for place in places %}
     <div class="col-md-6 col-lg-4">
         <div class="card h-100">
-            <img src="{{ place.photo_url }}" class="card-img-top" alt="{{ place.name }}">
+            <img src="{{ url_for('static', filename='uploads/' + place.image) }}" class="card-img-top" alt="{{ place.name }}">
             <div class="card-body">
                 <h5 class="card-title">{{ place.name }}</h5>
                 <p class="card-text text-muted small">{{ place.address }}</p>

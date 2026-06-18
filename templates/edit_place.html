@@ -5,11 +5,38 @@
 <div class="card shadow-sm">
     <div class="card-body">
         <form method="POST">
-            <div class="mb-3"><label>Название*</label><input type="text" name="name" class="form-control" value="{{ place.name }}" required></div>
-            <div class="mb-3"><label>Описание</label><textarea name="description" rows="3" class="form-control">{{ place.description }}</textarea></div>
-            <div class="mb-3"><label>Категория</label><select name="category" class="form-select"><option value="monument" {% if place.category=='monument' %}selected{% endif %}>Памятник</option><option value="park" {% if place.category=='park' %}selected{% endif %}>Парк</option><option value="museum" {% if place.category=='museum' %}selected{% endif %}>Музей</option><option value="cafe" {% if place.category=='cafe' %}selected{% endif %}>Кафе</option></select></div>
-            <div class="mb-3"><label>Адрес</label><input type="text" name="address" class="form-control" value="{{ place.address }}"></div>
-            <div class="mb-3"><label>URL фото</label><input type="url" name="photo_url" class="form-control" value="{{ place.photo_url }}"></div>
+            <div class="mb-3">
+                <label>Название (рус.)*</label>
+                <input type="text" name="name" class="form-control" value="{{ place.name }}" required>
+            </div>
+            <div class="mb-3">
+                <label>Название (англ.)*</label>
+                <input type="text" name="english_name" class="form-control" value="{{ place.english_name }}" required>
+                <small class="text-muted">Используется для поиска картинки в папке static/uploads/</small>
+            </div>
+            <div class="mb-3">
+                <label>Описание</label>
+                <textarea name="description" rows="3" class="form-control">{{ place.description }}</textarea>
+            </div>
+            <div class="mb-3">
+                <label>Категория</label>
+                <select name="category" class="form-select">
+                    <option value="monument" {% if place.category=='monument' %}selected{% endif %}>Памятник</option>
+                    <option value="park" {% if place.category=='park' %}selected{% endif %}>Парк</option>
+                    <option value="museum" {% if place.category=='museum' %}selected{% endif %}>Музей</option>
+                    <option value="cafe" {% if place.category=='cafe' %}selected{% endif %}>Кафе</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>Адрес</label>
+                <input type="text" name="address" class="form-control" value="{{ place.address }}">
+            </div>
+            <div class="mb-3">
+                <label>Текущее изображение</label><br>
+                <img src="{{ url_for('static', filename='uploads/' + place.image) }}" alt="current" style="max-height:150px;">
+                <p class="text-muted mt-1">Имя файла: {{ place.image }}</p>
+                <p class="text-muted">Чтобы изменить картинку, замените файл в папке static/uploads/ с соответствующим именем.</p>
+            </div>
             <button type="submit" class="btn btn-primary">Сохранить изменения</button>
             <a href="{{ url_for('admin_panel') }}" class="btn btn-secondary">Отмена</a>
         </form>

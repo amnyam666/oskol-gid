@@ -3,7 +3,7 @@
 {% block content %}
 <div class="row">
     <div class="col-md-6 mb-4">
-        <img src="{{ place.photo_url }}" class="img-fluid place-image" alt="{{ place.name }}">
+        <img src="{{ url_for('static', filename='uploads/' + place.image) }}" class="img-fluid place-image" alt="{{ place.name }}">
     </div>
     <div class="col-md-6">
         <h1 class="display-5 fw-bold">{{ place.name }}</h1>
